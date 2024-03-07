@@ -13,7 +13,7 @@ class Paddle(Turtle):
     def up(self):
         x_cord = self.xcor()
         y_cord = self.ycor()
-        if y_cord + 60 > 390:
+        if y_cord + 60 > 290:
             pass
         else:
             self.goto(x_cord, y_cord + 15)
@@ -21,7 +21,7 @@ class Paddle(Turtle):
     def down(self):
         x_cord = self.xcor()
         y_cord = self.ycor()
-        if y_cord - 60 < -380:
+        if y_cord - 60 < -280:
             pass
         else:
             self.goto(x_cord, y_cord - 15)

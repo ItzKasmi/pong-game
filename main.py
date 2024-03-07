@@ -1,6 +1,10 @@
 from turtle import Screen
 from paddle import Paddle
+from ball import Ball
+from scoreboard import Scoreboard
 import time
+
+STARTING_POSITIONS = [(-350, 0), (350, 0)]
 
 '''
 Breakdown the problem -
@@ -20,15 +24,18 @@ Breakdown the problem -
 '''
 
 screen = Screen()
-screen.setup(width=1200, height=800)
+screen.setup(width=800, height=600)
 screen.bgcolor("black")
 screen.title("Pong")
 screen.tracer(0)
 
-STARTING_POSITIONS = [(-500, 0), (500, 0)]
 
 paddle1 = Paddle(STARTING_POSITIONS[0])
 paddle2 = Paddle(STARTING_POSITIONS[1])
+
+ball = Ball()
+scoreboard = Scoreboard()
+
 
 screen.listen()
 screen.onkeypress(paddle1.up, "w")
@@ -39,7 +46,26 @@ screen.onkeypress(paddle2.down, "Down")
 
 game_is_on = True
 while game_is_on:
+    time.sleep(ball.move_speed)
     screen.update()
-    time.sleep(0.075)
+    ball.move()
+
+    # Detect collision with wall
+    if ball.ycor() > 280 or ball.ycor() < -280:
+        ball.bounce_y()
+
+    # Detect collision with paddle
+    if ball.distance(paddle1) < 50 and ball.xcor() < -320 or ball.distance(paddle2) < 50 and ball.xcor() > 320:
+        ball.bounce_x()
+
+    # Detect out of bounds
+    if ball.xcor() < -380:
+        ball.reset()
+        scoreboard.r_point()
+
+    if ball.xcor() > 380:
+        ball.reset()
+        scoreboard.l_point()
+
 
 screen.exitonclick()
